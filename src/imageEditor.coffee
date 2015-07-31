@@ -34,3 +34,11 @@ class ImageEditor
 
     self.initialized = true
 
+  update : (pic) ->
+    self = @
+
+    self.picture = new Image()
+    self.picture.setAttribute 'crossOrigin', 'anonymous'
+    self.picture.src = pic
+
+    self.context.drawImage self.picture, 0, 0, 240, 240
