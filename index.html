@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>imageEditor Example</title>
+  <style>
+    #image-editor canvas{
+      padding: 0px;
+      margin: 0px;
+      border: 0px;
+      width: 240px;
+      height: 240px;
+      background: rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <section id="image-editor">
+    <input type="file">
+    <canvas width="240" height="240"></canvas>
+    <button class="bt-left">Left</button>
+    <button class="bt-less">-</button>
+    <button class="bt-more">+</button>
+    <button class="bt-right">Right</button>
+    <button class="bt-save">Save</button>
+  </section>
+
+  <script src="dist/imageEditor.min.js"></script>
+
+  <script>
+    window.onload = function(){
+      var containerElt = document.getElementById("image-editor"),
+          inputFileElt = containerElt.querySelector("input[type=file]"),
+          imageEditorInst;
+
+      inputFileElt.addEventListener("change", function(ev) {
+        console.log('file');
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          if (imageEditorInst && imageEditorInst.initialized) {
+            imageEditorInst.update(e.target.result);
+          } else {
+            imageEditorInst = new ImageEditor({
+              elt: containerElt,
+              pic: e.target.result
+            });
+          }
+        };
+        reader.readAsDataURL(ev.target.files[0]);
+      });
+
+    };
+  </script>
+</body>
+</html>
