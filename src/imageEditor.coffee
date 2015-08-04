@@ -30,6 +30,12 @@ class ImageEditor
   init : ->
     self = @
 
+    self.btLeft.addEventListener 'click', self.turnLeft.bind(self), false
+    self.btRight.addEventListener 'click', self.turnRight.bind(self), false
+    self.btLess.addEventListener 'click', self.zoomOut.bind(self), false
+    self.btMore.addEventListener 'click', self.zoomIn.bind(self), false
+    self.btSave.addEventListener 'click', self.saveImage.bind(self), false
+
     self.context.drawImage self.picture, 0, 0, 240, 240
 
     self.initialized = true
@@ -42,3 +48,23 @@ class ImageEditor
     self.picture.src = pic
 
     self.context.drawImage self.picture, 0, 0, 240, 240
+
+  turnLeft : ->
+    self = @
+    console.log 'turnLeft'
+
+  turnRight : ->
+    self = @
+    console.log 'turnRight'
+
+  zoomOut : ->
+    self = @
+    console.log 'zoomOut'
+
+  zoomIn : ->
+    self = @
+    console.log 'zoomIn'
+
+  saveImage : ->
+    self = @
+    console.log 'saveImage'
