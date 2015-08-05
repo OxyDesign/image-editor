@@ -40,13 +40,9 @@ class ImageEditor
     self.btMore.addEventListener 'click', self.zoomIn.bind(self), false
     self.btSave.addEventListener 'click', self.saveImage.bind(self), false
 
-    self.picRatio = self.picture.height/self.picture.width
-    pictureLandscape = self.picRatio < 1
+    self.imgSettings()
 
-    self.imgW = if pictureLandscape then self.cnvW/self.picRatio else self.cnvW
-    self.imgH = if pictureLandscape then self.cnvH else self.cnvH*self.picRatio
-
-    self.context.drawImage self.picture, 0, 0, self.imgW, self.imgH
+    self.drawImage()
 
     self.initialized = true
 
@@ -57,13 +53,18 @@ class ImageEditor
     self.picture.setAttribute 'crossOrigin', 'anonymous'
     self.picture.src = pic
 
+    self.imgSettings()
+
+    self.drawImage()
+
+  imgSettings : ->
+    self = @
+
     self.picRatio = self.picture.height/self.picture.width
     pictureLandscape = self.picRatio < 1
 
     self.imgW = if pictureLandscape then self.cnvW/self.picRatio else self.cnvW
     self.imgH = if pictureLandscape then self.cnvH else self.cnvH*self.picRatio
-
-    self.context.drawImage self.picture, 0, 0, self.imgW, self.imgH
 
   turnLeft : ->
     self = @
@@ -80,6 +81,11 @@ class ImageEditor
   zoomIn : ->
     self = @
     console.log 'zoomIn'
+
+  drawImage : ->
+    self = @
+
+    self.context.drawImage self.picture, 0, 0, self.imgW, self.imgH
 
   saveImage : ->
     self = @
