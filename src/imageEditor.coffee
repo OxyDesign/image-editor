@@ -20,6 +20,10 @@ class ImageEditor
 
     self.context = self.canvas.getContext '2d'
 
+    self.cnvW = self.canvas.width
+    self.cnvH = self.canvas.height
+    self.cnvRatio = self.canvas.height/self.canvas.width
+
     self.picture = new Image()
     self.picture.setAttribute 'crossOrigin', 'anonymous'
     self.picture.src = self.config.pic
@@ -36,7 +40,13 @@ class ImageEditor
     self.btMore.addEventListener 'click', self.zoomIn.bind(self), false
     self.btSave.addEventListener 'click', self.saveImage.bind(self), false
 
-    self.context.drawImage self.picture, 0, 0, 240, 240
+    self.picRatio = self.picture.height/self.picture.width
+    pictureLandscape = self.picRatio < 1
+
+    self.imgW = if pictureLandscape then self.cnvW/self.picRatio else self.cnvW
+    self.imgH = if pictureLandscape then self.cnvH else self.cnvH*self.picRatio
+
+    self.context.drawImage self.picture, 0, 0, self.imgW, self.imgH
 
     self.initialized = true
 
@@ -47,7 +57,13 @@ class ImageEditor
     self.picture.setAttribute 'crossOrigin', 'anonymous'
     self.picture.src = pic
 
-    self.context.drawImage self.picture, 0, 0, 240, 240
+    self.picRatio = self.picture.height/self.picture.width
+    pictureLandscape = self.picRatio < 1
+
+    self.imgW = if pictureLandscape then self.cnvW/self.picRatio else self.cnvW
+    self.imgH = if pictureLandscape then self.cnvH else self.cnvH*self.picRatio
+
+    self.context.drawImage self.picture, 0, 0, self.imgW, self.imgH
 
   turnLeft : ->
     self = @
