@@ -24,6 +24,10 @@ class ImageEditor
     self.cnvH = self.canvas.height
     self.cnvRatio = self.canvas.height/self.canvas.width
 
+    self.zoom = 1.1
+    self.currentZoom = 1
+    self.maxZoom = 20
+
     self.picture = new Image()
     self.picture.setAttribute 'crossOrigin', 'anonymous'
     self.picture.src = self.config.pic
@@ -76,11 +80,19 @@ class ImageEditor
 
   zoomOut : ->
     self = @
-    console.log 'zoomOut'
+    return if self.currentZoom <= 1
+    self.imgW /= self.zoom
+    self.imgH /= self.zoom
+    self.currentZoom--
+    self.drawImage()
 
   zoomIn : ->
     self = @
-    console.log 'zoomIn'
+    return if self.currentZoom > self.maxZoom
+    self.imgW *= self.zoom
+    self.imgH *= self.zoom
+    self.currentZoom++
+    self.drawImage()
 
   drawImage : ->
     self = @
