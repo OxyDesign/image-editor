@@ -24,6 +24,11 @@ class ImageEditor
     self.cnvH = self.canvas.height
     self.cnvRatio = self.canvas.height/self.canvas.width
 
+    self.cnvHalfW = self.cnvW/2
+    self.cnvHalfH = self.cnvH/2
+    self.currentAngle = 0
+    self.newAngle = 0
+    self.toRad = Math.PI/180
     self.zoom = 1.1
     self.currentZoom = 1
     self.maxZoom = 20
@@ -46,6 +51,7 @@ class ImageEditor
 
     self.imgSettings()
 
+    self.context.translate self.cnvHalfW, self.cnvHalfH
     self.drawImage()
 
     self.initialized = true
@@ -70,13 +76,30 @@ class ImageEditor
     self.imgW = if pictureLandscape then self.cnvW/self.picRatio else self.cnvW
     self.imgH = if pictureLandscape then self.cnvH else self.cnvH*self.picRatio
 
+    self.imgPx = -self.imgW/2
+    self.imgPy = -self.imgH/2
+
   turnLeft : ->
     self = @
-    console.log 'turnLeft'
+    self.newAngle -= 90
+    self.animation = setInterval ->
+      self.currentAngle -= 2
+      self.context.rotate(-self.toRad*2)
+      self.drawImage()
+      if self.currentAngle is self.newAngle
+        clearInterval self.animation
+    ,1
 
   turnRight : ->
     self = @
-    console.log 'turnRight'
+    self.newAngle += 90
+    self.animation = setInterval ->
+      self.currentAngle += 2
+      self.context.rotate(self.toRad*2)
+      self.drawImage()
+      if self.currentAngle is self.newAngle
+        clearInterval self.animation
+    ,1
 
   zoomOut : ->
     self = @
@@ -97,7 +120,7 @@ class ImageEditor
   drawImage : ->
     self = @
 
-    self.context.drawImage self.picture, 0, 0, self.imgW, self.imgH
+    self.context.drawImage self.picture, self.imgPx, self.imgPy, self.imgW, self.imgH
 
   saveImage : ->
     self = @
