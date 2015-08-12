@@ -81,25 +81,15 @@ class ImageEditor
 
   turnLeft : ->
     self = @
+    self.animation and clearInterval self.animation
     self.newAngle -= 90
-    self.animation = setInterval ->
-      self.currentAngle -= 2
-      self.context.rotate(-self.toRad*2)
-      self.drawImage()
-      if self.currentAngle is self.newAngle
-        clearInterval self.animation
-    ,1
+    self.rotation()
 
   turnRight : ->
     self = @
+    self.animation and clearInterval self.animation
     self.newAngle += 90
-    self.animation = setInterval ->
-      self.currentAngle += 2
-      self.context.rotate(self.toRad*2)
-      self.drawImage()
-      if self.currentAngle is self.newAngle
-        clearInterval self.animation
-    ,1
+    self.rotation()
 
   zoomOut : ->
     self = @
@@ -116,6 +106,21 @@ class ImageEditor
     self.imgH *= self.zoom
     self.currentZoom++
     self.drawImage()
+
+  rotation : ->
+    self = @
+    self.animating = true
+
+    clockWise = self.currentAngle < self.newAngle
+
+    self.animation = setInterval ->
+      if clockWise then self.currentAngle += 2 else self.currentAngle -= 2
+      self.context.rotate((if clockWise then self.toRad else -self.toRad)*2)
+      self.drawImage()
+      if self.currentAngle is self.newAngle
+        clearInterval self.animation
+        self.animating = false
+    ,1
 
   drawImage : ->
     self = @
