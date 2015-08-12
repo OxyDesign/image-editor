@@ -53,6 +53,9 @@ class ImageEditor
     self.btMore.addEventListener 'click', self.zoomIn.bind(self), false
     self.btSave.addEventListener 'click', self.saveImage.bind(self), false
 
+    self.canvas.addEventListener 'mousedown', self.dragStart.bind(self), false
+    self.doc.addEventListener 'mouseup', self.dragStop.bind(self), false
+
     self.imgSettings()
 
     self.context.translate self.cnvHalfW, self.cnvHalfH
@@ -110,6 +113,46 @@ class ImageEditor
     self.imgH *= self.zoom
     self.currentZoom++
     self.drawImage()
+
+  dragStart : (e) ->
+    self = @
+    e.preventDefault()
+
+    self.direction = ((self.newAngle%360)+360)%360
+    self.xVal = e.clientX
+    self.yVal = e.clientY
+
+    self.dragMoveContext = (e) ->
+      self.dragMove e
+
+    self.canvas.addEventListener 'mousemove', self.dragMoveContext, false
+
+  dragMove : (e) ->
+    self = @
+
+    switch self.direction
+      when 0
+        self.imgPx = self.imgPx+=(e.clientX-self.xVal)
+        self.imgPy = self.imgPy+=(e.clientY-self.yVal)
+      when 90
+        self.imgPx = self.imgPx+=(e.clientY-self.yVal)
+        self.imgPy = self.imgPy-=(e.clientX-self.xVal)
+      when 180
+        self.imgPx = self.imgPx-=(e.clientX-self.xVal)
+        self.imgPy = self.imgPy-=(e.clientY-self.yVal)
+      when 270
+        self.imgPx = self.imgPx-=(e.clientY-self.yVal)
+        self.imgPy = self.imgPy+=(e.clientX-self.xVal)
+
+    self.drawImage()
+
+    self.xVal = e.clientX
+    self.yVal = e.clientY
+
+  dragStop : ->
+    self = @
+
+    self.canvas.removeEventListener 'mousemove', self.dragMoveContext, false
 
   rotation : ->
     self = @
