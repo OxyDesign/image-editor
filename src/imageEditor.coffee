@@ -26,6 +26,10 @@ class ImageEditor
 
     self.cnvHalfW = self.cnvW/2
     self.cnvHalfH = self.cnvH/2
+    self.cnvClearPx = -self.cnvW
+    self.cnvClearPy = -self.cnvH
+    self.cnvClearW = self.cnvW*2
+    self.cnvClearH = self.cnvH*2
     self.currentAngle = 0
     self.newAngle = 0
     self.toRad = Math.PI/180
@@ -124,6 +128,8 @@ class ImageEditor
 
   drawImage : ->
     self = @
+
+    self.context.clearRect self.cnvClearPx, self.cnvClearPy, self.cnvClearW, self.cnvClearH
 
     self.context.drawImage self.picture, self.imgPx, self.imgPy, self.imgW, self.imgH
 
