@@ -196,4 +196,6 @@ class ImageEditor
 
   saveImage : ->
     self = @
-    console.log 'saveImage'
+    return if self.animating
+    imgUrl = self.canvas.toDataURL()
+    self.config.callbackOnSave imgUrl if self.config.callbackOnSave

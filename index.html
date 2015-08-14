@@ -16,7 +16,7 @@
 </head>
 <body>
   <section id="image-editor">
-    <input type="file">
+    <input type="file" accept="image/*">
     <canvas width="240" height="240"></canvas>
     <button class="bt-left">Left</button>
     <button class="bt-less">-</button>
@@ -25,11 +25,14 @@
     <button class="bt-save">Save</button>
   </section>
 
+  <div id="saved-image"></div>
+
   <script src="dist/imageEditor.min.js"></script>
 
   <script>
     window.onload = function(){
-      var containerElt = document.getElementById("image-editor"),
+      var containerImg = document.getElementById("saved-image"),
+          containerElt = document.getElementById("image-editor"),
           inputFileElt = containerElt.querySelector("input[type=file]"),
           imageEditorInst;
 
@@ -42,7 +45,12 @@
           } else {
             imageEditorInst = new ImageEditor({
               elt: containerElt,
-              pic: e.target.result
+              pic: e.target.result,
+              callbackOnSave: function(img){
+                var savedImage = new Image();
+                savedImage.src = img;
+                containerImg.appendChild(savedImage);
+              }
             });
           }
         };
