@@ -59,6 +59,7 @@ class ImageEditor
     self.imgSettings()
 
     self.context.translate self.cnvHalfW, self.cnvHalfH
+    self.context.save()
     self.drawImage()
 
     self.initialized = true
@@ -66,12 +67,19 @@ class ImageEditor
   update : (pic) ->
     self = @
 
+    self.context.rotate self.toRad*-self.currentAngle
+
+    self.currentAngle = 0
+    self.newAngle = 0
+    self.currentZoom = 1
+
     self.picture = new Image()
     self.picture.setAttribute 'crossOrigin', 'anonymous'
     self.picture.src = pic
 
     self.imgSettings()
 
+    self.context.restore()
     self.drawImage()
 
   imgSettings : ->
@@ -173,6 +181,16 @@ class ImageEditor
     self = @
 
     self.context.clearRect self.cnvClearPx, self.cnvClearPy, self.cnvClearW, self.cnvClearH
+
+    if self.imgPx >= -self.cnvHalfW
+      self.imgPx = -self.cnvHalfW
+    else if self.imgPx <= self.cnvHalfW-self.imgW
+      self.imgPx = self.cnvHalfW-self.imgW
+
+    if self.imgPy >= -self.cnvHalfH
+      self.imgPy = -self.cnvHalfH
+    else if self.imgPy <= self.cnvHalfH-self.imgH
+      self.imgPy = self.cnvHalfH-self.imgH
 
     self.context.drawImage self.picture, self.imgPx, self.imgPy, self.imgW, self.imgH
 
