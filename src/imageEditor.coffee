@@ -7,6 +7,7 @@ class ImageEditor
     self = @
 
     self.config = config
+    self.formats = ['image/jpg','image/jpeg','image/png','image/gif']
 
     elt = self.config.elt
 
@@ -30,19 +31,23 @@ class ImageEditor
     self.cnvClearPy = -self.cnvH
     self.cnvClearW = self.cnvW*2
     self.cnvClearH = self.cnvH*2
-    self.currentAngle = 0
-    self.newAngle = 0
     self.toRad = Math.PI/180
     self.zoom = 1.1
-    self.currentZoom = 1
     self.maxZoom = 20
 
-    self.picture = new Image()
-    self.picture.setAttribute 'crossOrigin', 'anonymous'
-    self.picture.src = self.config.pic
+    self.update self.config.pic
 
-    self.picture.onload = ->
-      self.init()
+  checkFormat : (pic) ->
+    self = @
+
+    isValid = false
+
+    for format in self.formats
+      if ~pic.indexOf format
+        isValid = true
+        break
+
+    return isValid
 
   init : ->
     self = @
@@ -56,8 +61,6 @@ class ImageEditor
     self.canvas.addEventListener 'mousedown', self.dragStart.bind(self), false
     self.doc.addEventListener 'mouseup', self.dragStop.bind(self), false
 
-    self.imgSettings()
-
     self.context.translate self.cnvHalfW, self.cnvHalfH
     self.context.save()
     self.drawImage()
@@ -67,20 +70,32 @@ class ImageEditor
   update : (pic) ->
     self = @
 
-    self.context.rotate self.toRad*-self.currentAngle
+    return if !self.checkFormat pic
+
+    self.createImg pic
+
+    self.context.rotate self.toRad*-(self.currentAngle || 0)
 
     self.currentAngle = 0
     self.newAngle = 0
     self.currentZoom = 1
 
-    self.picture = new Image()
-    self.picture.setAttribute 'crossOrigin', 'anonymous'
-    self.picture.src = pic
-
     self.imgSettings()
+
+    if !self.initialized
+      self.picture.onload = ->
+        self.init()
+      return
 
     self.context.restore()
     self.drawImage()
+
+  createImg : (pic) ->
+    self = @
+
+    self.picture = new Image()
+    self.picture.setAttribute 'crossOrigin', 'anonymous'
+    self.picture.src = pic
 
   imgSettings : ->
     self = @

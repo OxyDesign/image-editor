@@ -40,7 +40,7 @@
         console.log('file');
         var reader = new FileReader();
         reader.onload = function(e) {
-          if (imageEditorInst && imageEditorInst.initialized) {
+          if (imageEditorInst) {
             imageEditorInst.update(e.target.result);
           } else {
             imageEditorInst = new ImageEditor({
