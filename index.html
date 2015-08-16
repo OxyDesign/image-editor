@@ -37,7 +37,6 @@
           imageEditorInst;
 
       inputFileElt.addEventListener("change", function(ev) {
-        console.log('file');
         var reader = new FileReader();
         reader.onload = function(e) {
           if (imageEditorInst) {
@@ -48,7 +47,7 @@
               pic: e.target.result,
               callbackOnSave: function(img){
                 var savedImage = new Image();
-                savedImage.src = img;
+                savedImage.src = img.base64;
                 containerImg.appendChild(savedImage);
               }
             });

@@ -192,6 +192,24 @@ class ImageEditor
         self.animating = false
     ,1
 
+  dataURItoBlob:(dataURI) ->
+    byteString
+    mimestring
+
+    if (dataURI.split(',')[0].indexOf('base64') != -1 )
+      byteString = atob(dataURI.split(',')[1])
+    else
+      byteString = decodeURI(dataURI.split(',')[1])
+
+    mimestring = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+    content = new Array()
+    i = 0
+    while i < byteString.length
+      content[i] = byteString.charCodeAt(i)
+      i++
+    return new Blob( [ new Uint8Array(content) ], { type: 'image/jpeg' } )
+
   drawImage : ->
     self = @
 
@@ -213,4 +231,4 @@ class ImageEditor
     self = @
     return if self.animating
     imgUrl = self.canvas.toDataURL()
-    self.config.callbackOnSave imgUrl if self.config.callbackOnSave
+    self.config.callbackOnSave {base64 : imgUrl, blob : self.dataURItoBlob imgUrl} if self.config.callbackOnSave
