@@ -67,6 +67,8 @@ class ImageEditor
 
     self.initialized = true
 
+    self.config.callbackOnInit() if self.config.callbackOnInit
+
   update : (pic) ->
     self = @
 
@@ -89,6 +91,8 @@ class ImageEditor
 
     self.context.restore()
     self.drawImage()
+
+    self.config.callbackOnUpdate() if self.config.callbackOnUpdate
 
   createImg : (pic) ->
     self = @
@@ -115,11 +119,15 @@ class ImageEditor
     self.newAngle -= 90
     self.rotation()
 
+    self.config.callbackOnTurnLeft self.newAngle  if self.config.callbackOnTurnLeft
+
   turnRight : ->
     self = @
     self.animation and clearInterval self.animation
     self.newAngle += 90
     self.rotation()
+
+    self.config.callbackOnTurnRight self.newAngle  if self.config.callbackOnTurnRight
 
   zoomOut : ->
     self = @
@@ -129,6 +137,8 @@ class ImageEditor
     self.currentZoom--
     self.drawImage()
 
+    self.config.callbackOnZoomOut self.currentZoom if self.config.callbackOnZoomOut
+
   zoomIn : ->
     self = @
     return if self.currentZoom > self.maxZoom
@@ -136,6 +146,8 @@ class ImageEditor
     self.imgH *= self.zoom
     self.currentZoom++
     self.drawImage()
+
+    self.config.callbackOnZoomIn self.currentZoom if self.config.callbackOnZoomIn
 
   dragStart : (e) ->
     self = @
@@ -149,6 +161,8 @@ class ImageEditor
       self.dragMove e
 
     self.canvas.addEventListener 'mousemove', self.dragMoveContext, false
+
+    self.config.callbackOnDragStart self.xVal,self.yVal if self.config.callbackOnDragStart
 
   dragMove : (e) ->
     self = @
@@ -172,10 +186,14 @@ class ImageEditor
     self.xVal = e.clientX
     self.yVal = e.clientY
 
+    self.config.callbackOnDragMove self.xVal,self.yVal if self.config.callbackOnDragMove
+
   dragStop : ->
     self = @
 
     self.canvas.removeEventListener 'mousemove', self.dragMoveContext, false
+
+    self.config.callbackOnDragStop self.xVal,self.yVal if self.config.callbackOnDragStop
 
   rotation : ->
     self = @
@@ -231,4 +249,5 @@ class ImageEditor
     self = @
     return if self.animating
     imgUrl = self.canvas.toDataURL()
+
     self.config.callbackOnSave {base64 : imgUrl, blob : self.dataURItoBlob imgUrl} if self.config.callbackOnSave
