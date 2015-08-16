@@ -59,7 +59,6 @@ class ImageEditor
     self.btSave.addEventListener 'click', self.saveImage.bind(self), false
 
     self.canvas.addEventListener 'mousedown', self.dragStart.bind(self), false
-    self.doc.addEventListener 'mouseup', self.dragStop.bind(self), false
 
     self.context.translate self.cnvHalfW, self.cnvHalfH
     self.context.save()
@@ -160,7 +159,11 @@ class ImageEditor
     self.dragMoveContext = (e) ->
       self.dragMove e
 
+    self.dragStopContext = (e) ->
+      self.dragStop e
+
     self.canvas.addEventListener 'mousemove', self.dragMoveContext, false
+    self.doc.addEventListener 'mouseup', self.dragStopContext, false
 
     self.config.callbackOnDragStart self.xVal,self.yVal if self.config.callbackOnDragStart
 
@@ -192,6 +195,7 @@ class ImageEditor
     self = @
 
     self.canvas.removeEventListener 'mousemove', self.dragMoveContext, false
+    self.doc.removeEventListener 'mouseup', self.dragStopContext, false
 
     self.config.callbackOnDragStop self.xVal,self.yVal if self.config.callbackOnDragStop
 
