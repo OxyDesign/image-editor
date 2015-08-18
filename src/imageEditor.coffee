@@ -2,7 +2,7 @@
 
 class ImageEditor
   constructor: (config={}) ->
-    return if not (config.elt or config.pic)
+    return if not (config.elt)
 
     self = @
 
@@ -11,6 +11,8 @@ class ImageEditor
 
     elt = self.config.elt
 
+    self.input = elt.querySelector 'input[type=file]'
+    self.reader = new FileReader()
     self.canvas = elt.querySelector 'canvas'
     self.btLeft = elt.querySelector '.bt-left'
     self.btRight = elt.querySelector '.bt-right'
@@ -35,7 +37,11 @@ class ImageEditor
     self.zoom = 1.1
     self.maxZoom = 20
 
-    self.update self.config.pic
+    self.reader.onload = (e) ->
+      self.update e.target.result
+
+    self.input.addEventListener 'change', (e) ->
+      self.reader.readAsDataURL e.target.files[0]
 
   checkFormat : (pic) ->
     self = @

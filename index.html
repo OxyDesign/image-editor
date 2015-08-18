@@ -11,6 +11,7 @@
       width: 240px;
       height: 240px;
       background: rgba(0,0,0,0.2);
+      cursor: move;
     }
   </style>
 </head>
@@ -32,57 +33,43 @@
   <script>
     window.onload = function(){
       var containerImg = document.getElementById("saved-image"),
-          containerElt = document.getElementById("image-editor"),
-          inputFileElt = containerElt.querySelector("input[type=file]"),
-          imageEditorInst;
+          imageEditor;
 
-      inputFileElt.addEventListener("change", function(ev) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          if (imageEditorInst) {
-            imageEditorInst.update(e.target.result);
-          } else {
-            imageEditorInst = new ImageEditor({
-              elt: containerElt,
-              pic: e.target.result,
-              callbackOnSave: function(img){
-                var savedImage = new Image();
-                savedImage.src = img.base64;
-                containerImg.appendChild(savedImage);
-              },
-              callbackOnInit : function(){
-                console.log('callbackOnInit');
-              },
-              callbackOnUpdate : function(){
-                console.log('callbackOnUpdate');
-              },
-              callbackOnTurnLeft : function(angle){
-                console.log('callbackOnTurnLeft',angle);
-              },
-              callbackOnTurnRight : function(angle){
-                console.log('callbackOnTurnRight',angle);
-              },
-              callbackOnZoomOut : function(zoomLevel){
-                console.log('callbackOnZoomOut',zoomLevel);
-              },
-              callbackOnZoomIn : function(zoomLevel){
-                console.log('callbackOnZoomIn',zoomLevel);
-              },
-              callbackOnDragStart : function(x,y){
-                console.log('callbackOnDragStart',x,y);
-              },
-              callbackOnDragMove : function(x,y){
-                console.log('callbackOnDragMove',x,y);
-              },
-              callbackOnDragStop : function(x,y){
-                console.log('callbackOnDragStop',x,y);
-              }
-            });
-          }
-        };
-        reader.readAsDataURL(ev.target.files[0]);
+      imageEditorInst = new ImageEditor({
+        elt: document.getElementById("image-editor"),
+        callbackOnSave: function(img){
+          var savedImage = new Image();
+          savedImage.src = img.base64;
+          containerImg.appendChild(savedImage);
+        },
+        callbackOnInit : function(){
+          console.log('callbackOnInit');
+        },
+        callbackOnUpdate : function(){
+          console.log('callbackOnUpdate');
+        },
+        callbackOnTurnLeft : function(angle){
+          console.log('callbackOnTurnLeft',angle);
+        },
+        callbackOnTurnRight : function(angle){
+          console.log('callbackOnTurnRight',angle);
+        },
+        callbackOnZoomOut : function(zoomLevel){
+          console.log('callbackOnZoomOut',zoomLevel);
+        },
+        callbackOnZoomIn : function(zoomLevel){
+          console.log('callbackOnZoomIn',zoomLevel);
+        },
+        callbackOnDragStart : function(x,y){
+          console.log('callbackOnDragStart',x,y);
+        },
+        callbackOnDragMove : function(x,y){
+          console.log('callbackOnDragMove',x,y);
+        },
+        callbackOnDragStop : function(x,y){
+          console.log('callbackOnDragStop',x,y);
+        }
       });
-
     };
   </script>
 </body>
