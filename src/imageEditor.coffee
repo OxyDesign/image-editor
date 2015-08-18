@@ -11,14 +11,16 @@ class ImageEditor
 
     elt = self.config.elt
 
-    self.input = elt.querySelector 'input[type=file]'
     self.reader = new FileReader()
-    self.canvas = elt.querySelector 'canvas'
-    self.btLeft = elt.querySelector '.bt-left'
-    self.btRight = elt.querySelector '.bt-right'
-    self.btLess = elt.querySelector '.bt-less'
-    self.btMore = elt.querySelector '.bt-more'
-    self.btSave = elt.querySelector '.bt-save'
+
+    self.input = self.config.input or elt.querySelector 'input[type=file]'
+    self.canvas = self.config.canvas or elt.querySelector 'canvas'
+    self.btLeft = self.config.btLeft or elt.querySelector '.bt-left'
+    self.btRight = self.config.btRight or elt.querySelector '.bt-right'
+    self.btLess = self.config.btLess or elt.querySelector '.bt-less'
+    self.btMore = self.config.btMore or elt.querySelector '.bt-more'
+    self.btSave = self.config.btSave or elt.querySelector '.bt-save'
+
     self.doc = document
 
     self.context = self.canvas.getContext '2d'
