@@ -3,30 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <title>imageEditor Example</title>
+  <link rel="stylesheet" href="libs/normalize.css" />
+  <link rel="stylesheet" href="libs/foundation.min.css" />
   <style>
+    header{
+      text-align:center;
+    }
     #image-editor canvas{
-      padding: 0px;
-      margin: 0px;
-      border: 0px;
-      width: 240px;
-      height: 240px;
+      display: block;
+      padding: 0;
+      margin: 0 auto 20px;
+      border: 0;
+      width: 500px;
+      height: 500px;
       background: rgba(0,0,0,0.2);
       cursor: move;
     }
-  </style>
+    .file-upload {
+      position: relative;
+      overflow: hidden;
+    }
+    .file-upload input.file-input {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      padding: 0;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0;
+      filter: alpha(opacity=0);
+    }
+    #saved-image img{
+      display:block;
+      width:100%;
+      margin-bottom:20px;
+    }
+    footer{
+      text-align:center;
+    }
+</style>
 </head>
 <body>
-  <section id="image-editor">
-    <input type="file" accept="image/*">
-    <canvas width="240" height="240"></canvas>
-    <button class="bt-left">Left</button>
-    <button class="bt-less">-</button>
-    <button class="bt-more">+</button>
-    <button class="bt-right">Right</button>
-    <button class="bt-save">Save</button>
-  </section>
+  <header class="row">
+    <h1 class="small-12 large-12">Image Editor</h1>
+  </header>
+  <section id="image-editor" class="row">
+    <div class="small-12 large-2 columns">
+      <button class="file-upload expand">
+        <input type="file" class="file-input" accept="image/*">
+        Choose File
+      </button>
+      <button class="bt-more expand">Zoom In</button>
+      <button class="bt-less expand">Zoom Out</button>
+      <button class="bt-left expand">Turn Left</button>
+      <button class="bt-right expand">Turn Right</button>
+      <button class="bt-save expand">Save</button>
+    </div>
 
-  <div id="saved-image"></div>
+    <div class="small-12 large-8 columns">
+      <canvas width="500" height="500"></canvas>
+    </div>
+
+    <div class="small-12 large-2 columns" id="saved-image">
+    </div>
+  </section>
+  <footer class="row">
+    <p class="small-12 large-12"><a href="https://github.com/OxyDesign/image-editor">See the project on GitHub</a></p>
+  </footer>
 
   <script src="dist/imageEditor.min.js"></script>
 
