@@ -36,8 +36,8 @@ class ImageEditor
     self.cnvClearW = self.cnvW*2
     self.cnvClearH = self.cnvH*2
     self.toRad = Math.PI/180
-    self.zoom = 1.1
-    self.maxZoom = 20
+    self.zoom = if not self.config.zoom then 1.1 else if self.config.zoom <= 1 then 1.1 else if self.config.zoom > 2 then 2 else self.config.zoom
+    self.maxZoom = if not self.config.maxZoom then 20 else if self.config.maxZoom < 1 then 1 else if self.config.maxZoom > 25 then 25 else self.config.maxZoom
 
     self.reader.onload = (e) ->
       self.update e.target.result
