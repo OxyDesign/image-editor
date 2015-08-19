@@ -39,8 +39,23 @@ class ImageEditor
     self.zoom = if not self.config.zoom then 1.1 else if self.config.zoom <= 1 then 1.1 else if self.config.zoom > 2 then 2 else self.config.zoom
     self.maxZoom = if not self.config.maxZoom then 20 else if self.config.maxZoom < 1 then 1 else if self.config.maxZoom > 25 then 25 else self.config.maxZoom
 
-    self.reader.onload = (e) ->
-      self.update e.target.result
+    self.reader.onload = (p) ->
+      self.update p.target.result
+
+    self.reader.onabort = (p) ->
+      self.config.callbackOnAbort p.target.error.message if self.config.callbackOnAbort
+
+    self.reader.onerror = (p) ->
+      self.config.callbackOnError p.target.error.message if self.config.callbackOnError
+
+    self.reader.onloadstart = () ->
+      self.config.callbackOnLoadStart() if self.config.callbackOnLoadStart
+
+    self.reader.onprogress = (p) ->
+      self.config.callbackOnProgress p.loaded/p.total*100 if self.config.callbackOnProgress
+
+    self.reader.onloadend = (p) ->
+      self.config.callbackOnLoadEnd() if self.config.callbackOnLoadEnd
 
     self.input.addEventListener 'change', (e) ->
       self.reader.readAsDataURL e.target.files[0]

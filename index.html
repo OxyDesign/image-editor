@@ -6,18 +6,64 @@
   <link rel="stylesheet" href="libs/normalize.css" />
   <link rel="stylesheet" href="libs/foundation.min.css" />
   <style>
+    body{
+      background: #222;
+    }
     header{
       text-align:center;
     }
-    #image-editor canvas{
+    h1{
+      color:#ccc;
+    }
+    .canvas-container{
+      position: relative;
+      margin: 0 auto 20px;
+      width: 500px;
+      height: 500px;
+    }
+    .canvas-container .loader-container{
+      display:none;
+      position:absolute;
+      top:0;
+      right:0;
+      bottom:0;
+      left:0;
+      background:rgba(0,0,0,0.5);
+    }
+    .canvas-container.loading .loader-container{
+      display:block;
+    }
+    .canvas-container .loader{
+      position:absolute;
+      top:48%;
+      right:25%;
+      bottom:48%;
+      left:25%;
+      background:rgba(255,255,255,0.75);
+      border-radius:10px;
+      overflow:hidden;
+    }
+    .canvas-container .percentage{
+      position:absolute;
+      top:0;
+      bottom:0;
+      left:0;
+      width:0;
+      background:#008CBA;
+      border-radius:10px;
+    }
+    .canvas-container canvas{
       display: block;
       padding: 0;
-      margin: 0 auto 20px;
+      margin: 0;
       border: 0;
       width: 500px;
       height: 500px;
-      background: rgba(0,0,0,0.2);
+      background: rgba(255,255,255,0.1);
       cursor: move;
+    }
+    .message-container p.alert{
+      cursor: default;
     }
     .file-upload {
       position: relative;
@@ -63,7 +109,11 @@
     </div>
 
     <div class="small-12 large-8 columns">
-      <canvas width="500" height="500"></canvas>
+      <div class="canvas-container">
+        <div class="loader-container"><div class="loader"><div class="percentage"></div></div></div>
+        <canvas width="500" height="500"></canvas>
+      </div>
+      <div class="message-container"></div>
     </div>
 
     <div class="small-12 large-2 columns" id="saved-image">
@@ -78,6 +128,9 @@
   <script>
     window.onload = function(){
       var containerImg = document.getElementById("saved-image"),
+          canvasContainer = document.querySelector('.canvas-container'),
+          canvasLoader = canvasContainer.querySelector('.percentage'),
+          messageContainer = document.querySelector('.message-container'),
           imageEditor;
 
       imageEditorInst = new ImageEditor({
@@ -113,6 +166,32 @@
         },
         callbackOnDragStop : function(x,y){
           console.log('callbackOnDragStop',x,y);
+        },
+        callbackOnAbort : function(errorMessage){
+          console.log('callbackOnAbort',errorMessage);
+          var message = document.createElement('p');
+          message.classList.add('button','expand','alert');
+          message.textContent = errorMessage;
+          messageContainer.appendChild(message);
+        },
+        callbackOnError : function(errorMessage){
+          console.log('callbackOnError',errorMessage);
+          var message = document.createElement('p');
+          message.classList.add('button','expand','alert');
+          message.textContent = errorMessage;
+          messageContainer.appendChild(message);
+        },
+        callbackOnLoadStart : function(){
+          messageContainer.innerHTML = '';
+          canvasLoader.style.width = 0;
+          canvasContainer.classList.add('loading');
+        },
+        callbackOnLoadEnd : function(){
+          console.log('callbackOnLoadEnd');
+          canvasContainer.classList.remove('loading');
+        },
+        callbackOnProgress : function(percentage){
+          canvasLoader.style.width = percentage + '%';
         }
       });
     };
