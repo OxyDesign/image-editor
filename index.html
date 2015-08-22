@@ -192,6 +192,18 @@
         },
         callbackOnProgress : function(percentage){
           canvasLoader.style.width = percentage + '%';
+        },
+        callbackOnOverSize : function(fileSize,maxSize){
+          var message = document.createElement('p');
+          message.classList.add('button','expand','alert');
+          message.textContent = 'Your file is : '+fileSize/1000000+' Mo - Max Size is : '+maxSize/1000000+' Mo';
+          messageContainer.appendChild(message);
+        },
+        callbackOnWrongFormat : function(file,formats){
+          var message = document.createElement('p');
+          message.classList.add('button','expand','alert');
+          message.textContent = 'Your file is : '+file.split(';')[0].split(':')[1]+' - Allowed formats are : '+formats.join(', ');
+          messageContainer.appendChild(message);
         }
       });
     };
