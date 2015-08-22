@@ -89,6 +89,7 @@ class ImageEditor
     self.btMore.addEventListener 'click', self.zoomIn.bind(self), false
     self.btSave.addEventListener 'click', self.saveImage.bind(self), false
 
+    self.canvas.addEventListener 'wheel', self.wheel.bind(self), false
     self.canvas.addEventListener 'mousedown', self.dragStart.bind(self), false
 
     self.context.translate self.cnvHalfW, self.cnvHalfH
@@ -144,6 +145,10 @@ class ImageEditor
 
     self.imgPx = -self.imgW/2
     self.imgPy = -self.imgH/2
+
+  wheel : (e) ->
+    self = @
+    if e.deltaY > 0 then self.zoomOut.bind(self)() else if e.deltaY < 0 then self.zoomIn.bind(self)()
 
   turnLeft : ->
     self = @

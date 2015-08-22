@@ -105,6 +105,7 @@ ImageEditor = (function() {
     self.btLess.addEventListener('click', self.zoomOut.bind(self), false);
     self.btMore.addEventListener('click', self.zoomIn.bind(self), false);
     self.btSave.addEventListener('click', self.saveImage.bind(self), false);
+    self.canvas.addEventListener('wheel', self.wheel.bind(self), false);
     self.canvas.addEventListener('mousedown', self.dragStart.bind(self), false);
     self.context.translate(self.cnvHalfW, self.cnvHalfH);
     self.context.save();
@@ -160,6 +161,16 @@ ImageEditor = (function() {
     self.imgH = pictureLandscape ? self.cnvH : self.cnvH * self.picRatio;
     self.imgPx = -self.imgW / 2;
     return self.imgPy = -self.imgH / 2;
+  };
+
+  ImageEditor.prototype.wheel = function(e) {
+    var self;
+    self = this;
+    if (e.deltaY > 0) {
+      return self.zoomOut.bind(self)();
+    } else if (e.deltaY < 0) {
+      return self.zoomIn.bind(self)();
+    }
   };
 
   ImageEditor.prototype.turnLeft = function() {
