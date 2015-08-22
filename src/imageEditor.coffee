@@ -61,9 +61,10 @@ class ImageEditor
       self.config.callbackOnLoadEnd() if self.config.callbackOnLoadEnd
 
     self.input.addEventListener 'change', (e) ->
+      return if !e.target.files[0]
       newFile = e.target.files[0]
       if newFile.size > self.maxSize
-        self.config.callbackOnOverSize(newFile.size,self.maxSize) if self.config.callbackOnOverSize
+        self.config.callbackOnOverSize newFile.size,self.maxSize if self.config.callbackOnOverSize
         return
       self.reader.readAsDataURL newFile
 
@@ -102,7 +103,7 @@ class ImageEditor
     self = @
 
     if !self.checkFormat pic
-      self.config.callbackOnWrongFormat(pic,self.formats) if self.config.callbackOnWrongFormat
+      self.config.callbackOnWrongFormat pic,self.formats if self.config.callbackOnWrongFormat
       return
 
     self.createImg pic
