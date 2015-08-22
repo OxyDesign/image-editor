@@ -7,6 +7,7 @@ var gulp = require('gulp'),
 gulp.task('scripts', function() {
   return gulp.src('src/*.coffee')
     .pipe(coffee({bare: true}))
+    .pipe(gulp.dest('dist/'))
     .pipe(uglify())
     .pipe(rename({suffix: ".min"}))
     .pipe(gulp.dest('dist/'));
