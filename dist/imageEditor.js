@@ -36,7 +36,7 @@ ImageEditor = (function() {
     self.toRad = Math.PI / 180;
     self.zoom = !self.config.zoom ? 1.1 : self.config.zoom <= 1 ? 1.1 : self.config.zoom > 2 ? 2 : self.config.zoom;
     self.maxZoom = !self.config.maxZoom ? 20 : self.config.maxZoom < 1 ? 1 : self.config.maxZoom > 25 ? 25 : self.config.maxZoom;
-    self.maxSize = !self.config.maxSize ? 5 : self.config.maxSize < 1 ? 1 : self.config.maxSize > 15 ? 15 : self.config.maxSize;
+    self.maxSize = !self.config.maxSize ? 5 : self.config.maxSize < 1 ? 1 : self.config.maxSize;
     self.maxSize = self.maxSize * 1000000;
     self.reader.onload = function(p) {
       return self.update(p.target.result);
