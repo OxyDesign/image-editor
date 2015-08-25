@@ -83,11 +83,11 @@ class ImageEditor
   init : ->
     self = @
 
-    self.btLeft.addEventListener 'click', self.turnLeft.bind(self), false
-    self.btRight.addEventListener 'click', self.turnRight.bind(self), false
-    self.btLess.addEventListener 'click', self.zoomOut.bind(self), false
-    self.btMore.addEventListener 'click', self.zoomIn.bind(self), false
-    self.btSave.addEventListener 'click', self.saveImage.bind(self), false
+    self.btLeft.addEventListener 'click', self.turnLeft.bind(self), false if self.btLeft
+    self.btRight.addEventListener 'click', self.turnRight.bind(self), false if self.btRight
+    self.btLess.addEventListener 'click', self.zoomOut.bind(self), false if self.btLess
+    self.btMore.addEventListener 'click', self.zoomIn.bind(self), false if self.btMore
+    self.btSave.addEventListener 'click', self.saveImage.bind(self), false if self.btSave
 
     self.canvas.addEventListener 'wheel', self.wheel.bind(self), false
     self.canvas.addEventListener 'mousedown', self.dragStart.bind(self), false

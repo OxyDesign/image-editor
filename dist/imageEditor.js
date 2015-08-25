@@ -100,11 +100,21 @@ ImageEditor = (function() {
   ImageEditor.prototype.init = function() {
     var self;
     self = this;
-    self.btLeft.addEventListener('click', self.turnLeft.bind(self), false);
-    self.btRight.addEventListener('click', self.turnRight.bind(self), false);
-    self.btLess.addEventListener('click', self.zoomOut.bind(self), false);
-    self.btMore.addEventListener('click', self.zoomIn.bind(self), false);
-    self.btSave.addEventListener('click', self.saveImage.bind(self), false);
+    if (self.btLeft) {
+      self.btLeft.addEventListener('click', self.turnLeft.bind(self), false);
+    }
+    if (self.btRight) {
+      self.btRight.addEventListener('click', self.turnRight.bind(self), false);
+    }
+    if (self.btLess) {
+      self.btLess.addEventListener('click', self.zoomOut.bind(self), false);
+    }
+    if (self.btMore) {
+      self.btMore.addEventListener('click', self.zoomIn.bind(self), false);
+    }
+    if (self.btSave) {
+      self.btSave.addEventListener('click', self.saveImage.bind(self), false);
+    }
     self.canvas.addEventListener('wheel', self.wheel.bind(self), false);
     self.canvas.addEventListener('mousedown', self.dragStart.bind(self), false);
     self.context.translate(self.cnvHalfW, self.cnvHalfH);
