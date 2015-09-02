@@ -1,6 +1,12 @@
 # image-editor
 
 
+## Demo
+
+
+[GH Page](http://oxydesign.github.io/image-editor/)
+
+
 ## Usage
 
 
