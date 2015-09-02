@@ -7,6 +7,26 @@
 Scale, Rotate, Crop and Process image with Canvas
 
 
+## Implementation
+
+
+### Load the script
+
+
+```
+<script src="[Path to scripts]/imageEditor.min.js"></script>
+```
+
+### Instantiation
+
+
+```
+var imageEditorInstance = new ImageEditor({
+  elt: (DOM Element),
+  ... optional settings ...
+});
+```
+
 ## Options (Object)
 
 
